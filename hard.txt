@@ -1,0 +1,75 @@
+---Source code in R---
+
+library("volesti")
+
+func <- function(x) {
+    exp(-a * sum(x^2))
+}
+
+monte_carlo <- function(dim, a, type) {
+    N = 10000
+    P = gen_cube(dim, 'H')
+    points = sample_points(P, N, distribution = type);
+    
+    sum = 0
+
+    for (n in (1 : N)) {
+        sum = sum + func(points[,n])
+    }
+    
+    sum * (2^dim) / N
+}
+
+for (n in (2 : 10)) {
+    for (a in (-3.5 : 3.5)) {
+        cat("n =", n, " a =", a, " integral =", monte_carlo(n, a, 'uniform'), "\n")
+    }
+}
+
+---Output---
+
+n = 9  a = -3.5  integral = 2874100317 
+n = 9  a = -2.5  integral = 15659389 
+n = 9  a = -1.5  integral = 121947.8 
+n = 9  a = -0.5  integral = 2524.422 
+n = 9  a = 0.5  integral = 125.7036 
+n = 9  a = 1.5  integral = 12.81941 
+n = 9  a = 2.5  integral = 2.168463 
+n = 9  a = 3.5  integral = 0.6240647 
+n = 10  a = -3.5  integral = 29928552564 
+n = 10  a = -2.5  integral = 87077386 
+n = 10  a = -1.5  integral = 449905.3 
+n = 10  a = -0.5  integral = 6063.109 
+n = 10  a = 0.5  integral = 214.1933 
+n = 10  a = 1.5  integral = 17.04272 
+n = 10  a = 2.5  integral = 2.315281 
+n = 10  a = 3.5  integral = 0.4962183
+
+---Comments---
+n = 3  a = 1  integral = 3.332308 (cubature) 
+n = 3  a = 1  integral = 3.380072 (monte-carlo)
+
+Runtime: Similar
+Error ~= 1.4%
+
+--------------------------------------------------
+
+n = 11  a = 1  integral = 80.98496 (cubature) 
+n = 11  a = 1  integral = 82.9161 (monte-carlo)
+
+Runtime: Similar
+Error ~= 2.3%
+
+--------------------------------------------------
+
+n = 14  a = 1  integral = 464.9421 (cubature)
+n = 14  a = 1  integral = 276.6385 (monte-carlo)
+
+Runtime: Similar
+Error ~= 40%
+
+--------------------------------------------------
+
+As we increase the dimensions, the error is increasing as well. By sampling more points the running time of the monte-carlo algorithm
+is becoming larger. Also we would expect by sampling more points to get a better accuracy, but because of the curse of the dimensionality we 
+need to sample too many points (exponentially many) to get a better result.

@@ -1,0 +1,23 @@
+---Source code in R---
+
+library("volesti")
+
+P = gen_rand_hpoly(2, 10)
+cat("(dim = 2, #facets = 10) Volume: ", volume(P), "\n")
+
+P = gen_rand_hpoly(2, 50)
+cat("(dim = 2, #facets = 50) Volume: ", volume(P), "\n")
+
+P = gen_rand_hpoly(3, 10)
+cat("(dim = 3, #facets = 10) Volume: ", volume(P), "\n")
+
+P = gen_rand_hpoly(10, 10000)
+cat("(dim = 10, #facets = 10000) Volume: ", volume(P), "\n")
+
+
+---Output---
+
+(dim = 2, #facets = 10) Volume:  671.5526 
+(dim = 2, #facets = 50) Volume:  321.7116 
+(dim = 3, #facets = 10) Volume:  8265.794 
+(dim = 10, #facets = 10000) Volume:  76290819680
