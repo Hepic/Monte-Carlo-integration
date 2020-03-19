@@ -1,0 +1,67 @@
+---Source code in R---
+
+library("volesti")
+
+func <- function(x, x0) {
+    exp(-a * sum((x - x0)^2))
+}
+
+monte_carlo <- function(type) {
+    N = 10000
+    points = sample_points(P, N, distribution = type)
+    sum = 0
+
+    for (n in (1 : N)) {
+        sum = sum + func(points[,n], x0)
+    }
+    
+    sum * vol_P / N
+}
+
+dim=100
+repet=20
+P = gen_rand_hpoly(dim, 100)
+x0 = inner_ball(P)[1:dim]
+vol_P = volume(P)
+
+for (a in (-3.5 : 3.5)) {
+    mean = 0
+    values = c(1:repet)
+
+    for (t in (1 : repet)) {
+        values[t] = monte_carlo('uniform')
+        mean = mean + values[t]
+    }
+    
+    mean = mean / repet
+    sum = 0
+
+    for (t in (1 : repet)) {
+        sum = sum + (values[t] - mean)^2
+    }
+
+    sum = sum / (repet - 1)
+    std = sqrt(sum)
+    # std = sd(values)
+
+    cat("a =", a, " integral =", mean, " std =", std, "\n")
+}
+
+---Output---
+
+Uniform:
+a = 1  integral = 5.849314  standard deviation = 9.355033 (N = 100 sampling points)
+a = 1  integral = 5.982679  standard deviation = 0.7946846 (N = 10000 sampling points)
+a = 0.5  integral = 18.03686  standard deviation = 2.187384 (N = 10000 sampling points)
+a = 0.2  integral = 61.76032  standard deviation = 2.76054 (N = 10000 sampling points)
+a = 0.1  integral = 179.4324  standard deviation = 4.999796 (N = 10000 sampling points) 
+
+Gaussian:
+a = 1  integral = 5.761375  standard deviation = 8.873758 (N = 100 sampling points)
+a = 1  integral = 6.65442  standard deviation = 1.170977 (N = 10000 sampling points)
+
+---Comments---
+
+We observe here that standard deviation is smaller if at each repetition we sample with more points.
+This is because we estimate the integral with more accuracy and as a result the estimations are more close to each other.
+Moreover as 'a' is approaching zero, the standard deviation is increasing.

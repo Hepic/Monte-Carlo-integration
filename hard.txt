@@ -6,7 +6,7 @@ func <- function(x) {
     exp(-a * sum(x^2))
 }
 
-monte_carlo <- function(dim, a, type) {
+monte_carlo <- function(dim, type) {
     N = 10000
     P = gen_cube(dim, 'H')
     points = sample_points(P, N, distribution = type);
@@ -22,7 +22,7 @@ monte_carlo <- function(dim, a, type) {
 
 for (n in (2 : 10)) {
     for (a in (-3.5 : 3.5)) {
-        cat("n =", n, " a =", a, " integral =", monte_carlo(n, a, 'uniform'), "\n")
+        cat("n =", n, " a =", a, " integral =", monte_carlo(n, 'uniform'), "\n")
     }
 }
 
