@@ -1,3 +1,7 @@
+##################################################################
+This test has been written in c++ as well, in the file "bonus.cpp"
+##################################################################
+
 ---Source code in R---
 
 library("volesti")
